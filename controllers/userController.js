@@ -14,7 +14,8 @@ module.exports = {
   async getSingleUser(req, res) {
     try {
       const user = await User.findOne({ _id: req.params.userId })
-        .select('-__v');
+        .select('-__v')
+        .populate({})
 
       if (!user) {
         return res.status(404).json({ message: 'No user with that ID' });
@@ -65,7 +66,9 @@ module.exports = {
 
     // Add the friend to the user's friends list
     user.friends.push(friendId);
+    friend.friends.push(userId);
     await user.save();
+    await friend.save();
 
     res.json({ message: 'Friend added successfully' });
   } catch (err) {
@@ -80,14 +83,22 @@ async removeFriend(req, res) {
 
     // Check if the user exists
     const user = await User.findById(userId);
+    const friend = await User.findById(friendId);
 
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
 
+    if (!friend) {
+      return res.status(404).json({ message: 'Friend not found' });
+    }
+
     // Remove the friend from the user's friends list
     user.friends = user.friends.filter((friend) => friend.toString() !== friendId);
     await user.save();
+
+    friend.friends = friend.friends.filter((friend) => friend.toString() !== userId);
+    await friend.save();
 
     res.json({ message: 'Friend removed successfully' });
   } catch (err) {
