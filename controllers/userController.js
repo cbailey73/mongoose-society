@@ -1,7 +1,7 @@
 const { User, Thought } = require('../models');
 
 module.exports = {
-  // Get all users
+  // /api/users
   async getUsers(req, res) {
     try {
       const users = await User.find();
@@ -10,7 +10,7 @@ module.exports = {
       res.status(500).json(err);
     }
   },
-  // Get a single user
+  // /api/users/:userId
   async getSingleUser(req, res) {
     try {
       const user = await User.findOne({ _id: req.params.userId })
@@ -25,7 +25,7 @@ module.exports = {
       res.status(500).json(err);
     }
   },
-  // create a new user
+  // /api/users
   async createUser(req, res) {
     try {
       const user = await User.create(req.body);
@@ -34,7 +34,7 @@ module.exports = {
       res.status(500).json(err);
     }
   },
-  // Delete a user and associated apps
+  // /api/users/:userId
   async deleteUser(req, res) {
     try {
       const user = await User.findOneAndDelete({ _id: req.params.userId });
@@ -44,9 +44,55 @@ module.exports = {
       }
 
       await Thought.deleteMany({ _id: { $in: user.thoughts } });
-      res.json({ message: 'User and associated apps deleted!' })
+      res.json({ message: 'User and associated thoughts deleted!' })
     } catch (err) {
       res.status(500).json(err);
     }
   },
+
+  // /api/users/:userId/friends/
+  async addFriend(req, res) {
+  try {
+    const { userId, friendId } = req.params;
+
+    // Check if the user and friend exist
+    const user = await User.findById(userId);
+    const friend = await User.findById(friendId);
+
+    if (!user || !friend) {
+      return res.status(404).json({ message: 'User or friend not found' });
+    }
+
+    // Add the friend to the user's friends list
+    user.friends.push(friendId);
+    await user.save();
+
+    res.json({ message: 'Friend added successfully' });
+  } catch (err) {
+    res.status(500).json(err);
+  }
+},
+
+// /api/users/:userId/friends/:friendId
+async removeFriend(req, res) {
+  try {
+    const { userId, friendId } = req.params;
+
+    // Check if the user exists
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Remove the friend from the user's friends list
+    user.friends = user.friends.filter((friend) => friend.toString() !== friendId);
+    await user.save();
+
+    res.json({ message: 'Friend removed successfully' });
+  } catch (err) {
+    res.status(500).json(err);
+  }
+},
+
 };
