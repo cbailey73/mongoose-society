@@ -4,7 +4,10 @@ module.exports = {
   // /api/users
   async getUsers(req, res) {
     try {
-      const users = await User.find();
+      const users = await User.find()
+      .select('-__v')
+      .populate('thoughts')
+
       res.json(users);
     } catch (err) {
       res.status(500).json(err);
@@ -82,7 +85,7 @@ async removeFriend(req, res) {
   try {
     const { userId, friendId } = req.params;
 
-    // Check if the user exists
+    // Check if the user and friend exist
     const user = await User.findById(userId);
     const friend = await User.findById(friendId);
 
@@ -94,7 +97,7 @@ async removeFriend(req, res) {
       return res.status(404).json({ message: 'Friend not found' });
     }
 
-    // Remove the friend from the user's friends list
+    // Remove the friend and the user from each other's friend list
     user.friends = user.friends.filter((friend) => friend.toString() !== friendId);
     await user.save();
 

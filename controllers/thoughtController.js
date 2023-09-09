@@ -6,6 +6,7 @@ module.exports = {
     try {
       const thoughts = await Thought.find()
       .select('-__v')
+      .populate('reactions')
 
       res.json(thoughts);
     } catch (err) {
@@ -116,7 +117,7 @@ module.exports = {
       res.status(500).json(err);
     }
   },
-  
+
   // /api/thoughts/:thoughtId/reactions/:reactionId
   async removeReaction(req, res) {
     try {
