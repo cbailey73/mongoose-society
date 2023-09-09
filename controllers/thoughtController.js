@@ -4,15 +4,21 @@ module.exports = {
   // /api/thoughts
   async getThoughts(req, res) {
     try {
-      const thoughts = await Thought.find();
+      const thoughts = await Thought.find()
+      .select('-__v')
+
       res.json(thoughts);
     } catch (err) {
       res.status(500).json(err);
     }
   },
+
+  // /api/thoughts/:thoughtId
   async getSingleThought(req, res) {
     try {
-      const thought = await Thought.findOne({ _id: req.params.thoughtId });
+      const thought = await Thought.findOne({ _id: req.params.thoughtId })
+      .select('-__v')
+      .populate('reactions')
 
       if (!thought) {
         return res.status(404).json({ message: 'No thought with that ID' });
@@ -23,6 +29,7 @@ module.exports = {
       res.status(500).json(err);
     }
   },
+
   // /api/thoughts
   async createThought(req, res) {
     try {
@@ -109,6 +116,7 @@ module.exports = {
       res.status(500).json(err);
     }
   },
+  
   // /api/thoughts/:thoughtId/reactions/:reactionId
   async removeReaction(req, res) {
     try {
