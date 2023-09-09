@@ -1,6 +1,7 @@
 const { Thought, User } = require('../models');
 
 module.exports = {
+  // /api/thoughts
   async getThoughts(req, res) {
     try {
       const thoughts = await Thought.find();
@@ -22,12 +23,12 @@ module.exports = {
       res.status(500).json(err);
     }
   },
-  // post thought
+  // /api/thoughts
   async createThought(req, res) {
     try {
       const thought = await Thought.create(req.body);
       const user = await User.findOneAndUpdate(
-        { _id: req.body.userId },
+        { userId: req.body.userId },
         { $addToSet: { thoughts: thought._id } },
         { new: true }
       );
@@ -44,7 +45,7 @@ module.exports = {
       res.status(500).json(err);
     }
   },
-  // TODO: put thought
+  // /api/thoughts/:thoughtId
   async updateThought(req, res) {
     try {
       const thought = await Thought.findOneAndUpdate(
@@ -63,7 +64,7 @@ module.exports = {
       res.status(500).json(err);
     }
   },
-  // delete thought
+  // /api/thoughts/:thoughtId
   async deleteThought(req, res) {
     try {
       const thought = await Thought.findOneAndRemove({ _id: req.params.thoughtId });
@@ -90,7 +91,7 @@ module.exports = {
       res.status(500).json(err);
     }
   },
-  // post reaction
+  // /api/thoughts/:thoughtId/reactions
   async addReaction(req, res) {
     try {
       const thought = await Thought.findOneAndUpdate(
@@ -108,7 +109,7 @@ module.exports = {
       res.status(500).json(err);
     }
   },
-  // TODO: delete reaction
+  // /api/thoughts/:thoughtId/reactions/:reactionId
   async removeReaction(req, res) {
     try {
       const thought= await Thought.findOneAndUpdate(
