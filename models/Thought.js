@@ -31,10 +31,11 @@ const thoughtSchema = new Schema(
   }
 );
 
-thoughtSchema.virtual('formatTime').get(function () {
+thoughtSchema.virtual('createdOn').get(function () {
     const formattedTimestamp = this.createdAt.toLocaleDateString();
     return formattedTimestamp;
   });
+
 
 thoughtSchema
   .virtual('numberReactions')

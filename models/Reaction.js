@@ -32,7 +32,7 @@ const reactionSchema = new Schema(
   }
 );
 
-reactionSchema.virtual('formatTime').get(function () {
+reactionSchema.virtual('createdOn').get(function () {
     const formattedTimestamp = this.createdAt.toLocaleDateString();
     return formattedTimestamp;
   });

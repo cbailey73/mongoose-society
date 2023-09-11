@@ -47,13 +47,6 @@ userSchema
     return this.friends.length;
   })
 
-// List friend names 
-// userSchema
-//   .virtual('friendNames')
-//   .get(function () {
-//     return [this.friends.username];
-//   })
-
 // Initialize our User model
 const User = model('User', userSchema);
 

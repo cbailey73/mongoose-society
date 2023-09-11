@@ -6,7 +6,6 @@ module.exports = {
     try {
       const thoughts = await Thought.find()
       .select('-__v')
-      .populate('reactions')
 
       res.json(thoughts);
     } catch (err) {
@@ -19,7 +18,6 @@ module.exports = {
     try {
       const thought = await Thought.findOne({ _id: req.params.thoughtId })
       .select('-__v')
-      .populate('reactions')
 
       if (!thought) {
         return res.status(404).json({ message: 'No thought with that ID' });
@@ -82,7 +80,6 @@ module.exports = {
       }
 
       const user = await User.findOneAndUpdate(
-        // thoughtId or req.params.thoughts.-id ?
         { thoughts: req.params.thoughtId },
         { $pull: { thoughts: req.params.thoughtId } },
         { new: true }
@@ -99,6 +96,7 @@ module.exports = {
       res.status(500).json(err);
     }
   },
+  
   // /api/thoughts/:thoughtId/reactions
   async addReaction(req, res) {
     try {
