@@ -7,6 +7,7 @@ module.exports = {
       const users = await User.find()
       .select('-__v')
       .populate('thoughts')
+      .populate('friends')
 
       res.json(users);
     } catch (err) {
