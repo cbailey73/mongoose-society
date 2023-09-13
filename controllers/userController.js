@@ -61,8 +61,12 @@ module.exports = {
     const user = await User.findById(userId);
     const friend = await User.findById(friendId);
 
-    if (!user || !friend) {
-      return res.status(404).json({ message: 'User or friend not found' });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    if (!friend) {
+      return res.status(404).json({ message: 'Friend not found' });
     }
 
     // Add the friend to the user's friends list
