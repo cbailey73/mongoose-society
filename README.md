@@ -87,4 +87,5 @@ The code for filtering out friends from a list was obtained by following this tu
 
 The code for linking an embedded model to the model containing it was found by following this tutorial: https://www.mongodb.com/community/forums/t/how-to-reference-the-objectid-from-one-collection-schema-to-another/203108
 
-
+## Demonstration
+A video showcasing the project can be found here: https://www.youtube.com/watch?v=KpgxsRjN1gY
