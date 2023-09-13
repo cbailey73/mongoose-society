@@ -36,6 +36,26 @@ module.exports = {
       res.status(500).json(err);
     }
   },
+
+  // /api/users/:userId
+async updateUser(req, res) {
+  try {
+    const updatedUser = await User.findOneAndUpdate(
+      { _id: req.params.userId },
+      { $set: req.body },
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: 'No user with that ID' });
+    }
+
+    res.json(updatedUser);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+},
+
   // /api/users/:userId
   async deleteUser(req, res) {
     try {
