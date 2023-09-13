@@ -85,3 +85,6 @@ The code for using the validator package to validate emails was obtained through
 
 The code for filtering out friends from a list was obtained by following this tutorial: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter
 
+The code for linking an embedded model to the model containing it was found by following this tutorial: https://www.mongodb.com/community/forums/t/how-to-reference-the-objectid-from-one-collection-schema-to-another/203108
+
+
